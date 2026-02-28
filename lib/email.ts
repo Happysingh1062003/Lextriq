@@ -1,19 +1,22 @@
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
-let resend: Resend | null = null;
-
-function getResend() {
-  if (!resend) {
-    resend = new Resend(process.env.RESEND_API_KEY);
-  }
-  return resend;
-}
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
 export async function sendOtpEmail(email: string, code: string) {
-  const fromEmail = process.env.RESEND_FROM_EMAIL || "Lextriq <onboarding@resend.dev>";
+  const from = process.env.SMTP_USER;
 
-  const { data, error } = await getResend().emails.send({
-    from: fromEmail,
+  if (!from) {
+    throw new Error("SMTP_USER is not configured in .env");
+  }
+
+  const info = await transporter.sendMail({
+    from: `Lextriq <${from}>`,
     to: email,
     subject: "Your Lextriq verification code",
     html: `
@@ -36,10 +39,5 @@ export async function sendOtpEmail(email: string, code: string) {
     `,
   });
 
-  if (error) {
-    console.error("[EMAIL] Failed to send OTP:", JSON.stringify(error));
-    throw new Error(`Failed to send verification email: ${error.message}`);
-  }
-
-  console.log(`[EMAIL] OTP sent successfully to ${email}, id: ${data?.id}`);
+  console.log(`[EMAIL] OTP sent successfully to ${email}, id: ${info.messageId}`);
 }

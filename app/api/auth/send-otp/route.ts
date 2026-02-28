@@ -9,9 +9,9 @@ const schema = z.object({
 
 export async function POST(req: Request) {
     try {
-        if (!process.env.RESEND_API_KEY) {
+        if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
             return NextResponse.json(
-                { error: "Email service not configured. Add RESEND_API_KEY to .env" },
+                { error: "Email service not configured. Add SMTP_USER and SMTP_PASS to .env" },
                 { status: 500 }
             );
         }
