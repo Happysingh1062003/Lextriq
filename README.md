@@ -166,20 +166,6 @@ npm start
 
 ---
 
-## 🚀 Deploy to Vercel
-
-1. Push your code to GitHub
-2. Import the repo at [vercel.com/new](https://vercel.com/new)
-3. Add all environment variables from `.env.example` in Vercel project settings
-4. Deploy — Vercel auto-runs `prisma generate` via the `postinstall` script
-5. After deploy, set `NEXTAUTH_URL` to your Vercel URL (e.g., `https://your-app.vercel.app`)
-6. Update OAuth redirect URIs in Google/GitHub developer consoles:
-   - Google: `https://your-app.vercel.app/api/auth/callback/google`
-   - GitHub: `https://your-app.vercel.app/api/auth/callback/github`
-7. Redeploy to apply changes
-
----
-
 ## 📊 Database Schema
 
 ```
