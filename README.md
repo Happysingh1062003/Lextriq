@@ -35,8 +35,8 @@
 - **📱 Responsive** — Mobile-first design with slide-in drawer sidebar
 
 ### Authentication
-- **🔐 Email OTP Login** — Passwordless magic code via Resend
-- **🔑 OAuth** — Google sign-in via NextAuth.js v5
+- **🔐 Email OTP Login** — Passwordless magic code via Gmail SMTP (Nodemailer)
+- **🔑 OAuth** — Google & GitHub sign-in via NextAuth.js v5
 - **👤 User Profiles** — Avatar, bio, and prompt history
 
 ---
@@ -51,7 +51,7 @@
 | **Components** | Radix UI, shadcn/ui, Lucide Icons |
 | **Database** | PostgreSQL + Prisma ORM 7 |
 | **Auth** | NextAuth.js v5 (OAuth + Email OTP) |
-| **Email** | Resend |
+| **Email** | Nodemailer + Gmail SMTP |
 | **File Upload** | UploadThing |
 | **Forms** | React Hook Form + Zod validation |
 | **Deployment** | Vercel (Edge + Serverless) |
@@ -101,7 +101,7 @@ prompt-vault/
 
 - **Node.js** ≥ 18
 - **PostgreSQL** database (local or hosted — [Neon](https://neon.tech), [Supabase](https://supabase.com), etc.)
-- **Resend** account for email OTP ([resend.com](https://resend.com))
+- **Gmail account** with [App Password](https://myaccount.google.com/apppasswords) enabled (for OTP emails)
 - **UploadThing** account for file uploads ([uploadthing.com](https://uploadthing.com))
 
 ### 1. Clone & Install
@@ -117,23 +117,30 @@ npm install
 Create a `.env` file in the root:
 
 ```env
-# Database
-DATABASE_URL="postgresql://user:password@localhost:5432/lextriq"
+# Database (get a free one at https://neon.tech)
+DATABASE_URL="postgresql://user:password@host/dbname?sslmode=require"
 
 # NextAuth
-AUTH_SECRET="your-random-secret-key"
-AUTH_URL="http://localhost:3000"
+NEXTAUTH_URL="http://localhost:3000"   # Change to your domain in production
+NEXTAUTH_SECRET="your-random-secret-key"
 
-# Google OAuth
-AUTH_GOOGLE_ID="your-google-client-id"
-AUTH_GOOGLE_SECRET="your-google-client-secret"
+# OAuth (optional — skip for email/password login)
+GOOGLE_CLIENT_ID="your-google-client-id"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+GITHUB_ID="your-github-client-id"
+GITHUB_SECRET="your-github-client-secret"
 
-# Resend (Email OTP)
-RESEND_API_KEY="re_xxxxxxxxxxxx"
+# Gmail SMTP (for OTP emails)
+SMTP_USER="your-gmail@gmail.com"
+SMTP_PASS="xxxx xxxx xxxx xxxx"   # Google App Password, NOT your login password
 
 # UploadThing
 UPLOADTHING_TOKEN="your-uploadthing-token"
 ```
+
+> **Note:** Generate `NEXTAUTH_SECRET` with: `node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"`
+> 
+> **Note:** Get a Gmail App Password at [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords) (requires 2-Step Verification enabled).
 
 ### 3. Database Setup
 
@@ -156,6 +163,20 @@ Open [http://localhost:3000](http://localhost:3000) — you're live.
 npm run build
 npm start
 ```
+
+---
+
+## 🚀 Deploy to Vercel
+
+1. Push your code to GitHub
+2. Import the repo at [vercel.com/new](https://vercel.com/new)
+3. Add all environment variables from `.env.example` in Vercel project settings
+4. Deploy — Vercel auto-runs `prisma generate` via the `postinstall` script
+5. After deploy, set `NEXTAUTH_URL` to your Vercel URL (e.g., `https://your-app.vercel.app`)
+6. Update OAuth redirect URIs in Google/GitHub developer consoles:
+   - Google: `https://your-app.vercel.app/api/auth/callback/google`
+   - GitHub: `https://your-app.vercel.app/api/auth/callback/github`
+7. Redeploy to apply changes
 
 ---
 
