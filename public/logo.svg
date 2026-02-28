@@ -1,0 +1,8 @@
+<svg width="512" height="512" viewBox="32 32 448 448" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g fill="currentColor" stroke="currentColor" stroke-width="28" stroke-linejoin="round">
+    <!-- Vertical Plane -->
+    <path d="M 64 116 L 160 68 L 160 348 L 64 396 Z" />
+    <!-- Horizontal Plane -->
+    <path d="M 192 364 L 288 316 L 448 396 L 352 444 Z" />
+  </g>
+</svg>
