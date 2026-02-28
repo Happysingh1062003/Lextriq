@@ -35,23 +35,55 @@ const getCachedPrompts = unstable_cache(
         }
 
         if (search) {
-            where.OR = [
-                { title: { contains: search, mode: "insensitive" } },
-                { description: { contains: search, mode: "insensitive" } },
-                { content: { contains: search, mode: "insensitive" } },
-                { tags: { hasSome: [search] } },
-            ];
+            const searchTerm = search.trim();
+            // Split into individual words for broader matching
+            const words = searchTerm.split(/\s+/).filter(Boolean);
+
+            if (words.length > 1) {
+                // Multi-word: each word must appear somewhere (AND logic across words)
+                where.AND = words.map(word => ({
+                    OR: [
+                        { title: { contains: word, mode: "insensitive" as const } },
+                        { description: { contains: word, mode: "insensitive" as const } },
+                        { content: { contains: word, mode: "insensitive" as const } },
+                        { tags: { hasSome: [word, word.toLowerCase(), word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()] } },
+                        { author: { name: { contains: word, mode: "insensitive" as const } } },
+                    ],
+                }));
+            } else {
+                // Single word: broader OR matching
+                where.OR = [
+                    { title: { contains: searchTerm, mode: "insensitive" } },
+                    { description: { contains: searchTerm, mode: "insensitive" } },
+                    { content: { contains: searchTerm, mode: "insensitive" } },
+                    { tags: { hasSome: [searchTerm, searchTerm.toLowerCase(), searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1).toLowerCase()] } },
+                    { author: { name: { contains: searchTerm, mode: "insensitive" } } },
+                ];
+            }
         }
 
         let orderBy: Prisma.PromptOrderByWithRelationInput | Prisma.PromptOrderByWithRelationInput[] = { createdAt: "desc" };
         if (sort === "trending") {
-            orderBy = [{ upvotes: { _count: "desc" } }, { createdAt: "desc" }];
+            // Trending = composite of upvotes + copies + views + bookmarks
+            orderBy = [
+                { upvotes: { _count: "desc" } },
+                { copyCount: "desc" },
+                { views: "desc" },
+                { bookmarks: { _count: "desc" } },
+                { createdAt: "desc" },
+            ];
         } else if (sort === "upvotes") {
             orderBy = { upvotes: { _count: "desc" } };
         } else if (sort === "saved") {
             orderBy = { bookmarks: { _count: "desc" } };
         } else if (sort === "newest") {
             orderBy = { createdAt: "desc" };
+        } else if (sort === "oldest") {
+            orderBy = { createdAt: "asc" };
+        } else if (sort === "views") {
+            orderBy = { views: "desc" };
+        } else if (sort === "copies") {
+            orderBy = { copyCount: "desc" };
         }
 
         const [prompts, total] = await Promise.all([

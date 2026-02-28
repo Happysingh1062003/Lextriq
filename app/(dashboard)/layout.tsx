@@ -41,28 +41,29 @@ export default function DashboardLayout({
     }, [mobileOpen]);
 
     const sidebarWidth = sidebarCollapsed ? 72 : 280;
-    const showDesktopSidebar = !mounted || !isMobile; // before mount, assume desktop
-    const contentMargin = showDesktopSidebar ? sidebarWidth : 0;
 
     return (
         <div className="min-h-screen bg-[#F6F6F6]" suppressHydrationWarning>
 
-            {/* Desktop sidebar — always visible on large screens */}
-            {showDesktopSidebar && (
+            {/* Desktop sidebar — only render after mounted to prevent flash */}
+            {mounted && !isMobile && (
                 <Sidebar
                     collapsed={sidebarCollapsed}
                     onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
                 />
             )}
 
-            {/* Mobile sidebar overlay */}
-            {mounted && isMobile && mobileOpen && (
+            {/* Mobile sidebar overlay + slide-in drawer */}
+            {mounted && isMobile && (
                 <>
                     <div
-                        className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
+                        className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity duration-300 ${mobileOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
                         onClick={() => setMobileOpen(false)}
                     />
-                    <div className="z-50 fixed inset-y-0 left-0 w-[280px] max-w-[80vw]">
+                    <div
+                        className="z-50 fixed inset-y-0 left-0 w-[280px] max-w-[80vw] transition-transform duration-300 ease-out"
+                        style={{ transform: mobileOpen ? 'translateX(0)' : 'translateX(-100%)' }}
+                    >
                         <Sidebar
                             collapsed={false}
                             onToggle={() => setMobileOpen(false)}
@@ -78,11 +79,11 @@ export default function DashboardLayout({
                 onMobileMenuToggle={() => setMobileOpen(!mobileOpen)}
             />
 
-            {/* Main content */}
+            {/* Main content — use CSS class before mount, JS margin after */}
             <main
-                className="pt-16 transition-all duration-300"
+                className={`pt-16 transition-all duration-300 ${!mounted ? 'md:ml-[280px]' : ''}`}
                 suppressHydrationWarning
-                style={{ marginLeft: contentMargin }}
+                style={mounted ? { marginLeft: isMobile ? 0 : sidebarWidth } : undefined}
             >
                 <div className="p-4 md:p-8 lg:p-10">{children}</div>
             </main>

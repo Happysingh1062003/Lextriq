@@ -5,7 +5,9 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { PromptCard } from "@/components/PromptCard";
 import { SkeletonCard } from "@/components/SkeletonCard";
 import { getPrompts, getUserInteractionState } from "@/lib/queries";
+import { prisma } from "@/lib/prisma";
 import type { PromptWithRelations } from "@/types";
+import { OnboardingProgress } from "@/components/OnboardingProgress";
 
 async function TrendingFeed({ userId }: { userId?: string }) {
     const data = await getPrompts({ sort: "trending", limit: 3 });
@@ -50,14 +52,28 @@ export default async function DashboardFeedPage() {
     const userId = session?.user?.id;
     const firstName = session?.user?.name?.split(" ")[0] || "there";
 
+    // Lightweight onboarding state queries
+    const [savedCount, uploadedCount] = userId
+        ? await Promise.all([
+            prisma.bookmark.count({ where: { userId } }),
+            prisma.prompt.count({ where: { authorId: userId } }),
+        ])
+        : [0, 0];
+
     return (
         <div className="space-y-20 max-w-6xl">
 
             {/* Welcome Greeting */}
-            <section className="animate-fade-in">
+            <section className="animate-fade-in space-y-6">
                 <h2 className="text-[28px] font-normal tracking-tight text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.03em" }}>
                     Hey, {firstName} 👋
                 </h2>
+
+                {/* Onboarding Progress */}
+                <OnboardingProgress
+                    hasSavedPrompt={savedCount > 0}
+                    hasUploadedPrompt={uploadedCount > 0}
+                />
             </section>
 
             {/* Trending */}

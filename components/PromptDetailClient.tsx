@@ -42,16 +42,22 @@ export function PromptDetailClient({ prompt }: PromptDetailClientProps) {
     const [localCopyCount, setLocalCopyCount] = useState(prompt?.copyCount || 0);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [copyFlash, setCopyFlash] = useState(false);
 
     const copyPrompt = async () => {
         if (prompt?.content) {
             const ok = await copyToClipboard(prompt.content);
             if (ok) {
                 setCopied(true);
+                setCopyFlash(true);
                 setLocalCopyCount((prev: number) => prev + 1);
-                toast.success("Prompt copied to clipboard!");
+                toast.success("Prompt copied! You just saved ~20 min of work.", {
+                    icon: "✅",
+                    duration: 3000,
+                });
                 fetch(`/api/prompts/${prompt.id}/copy`, { method: "POST" }).catch(() => { });
-                setTimeout(() => setCopied(false), 2000);
+                setTimeout(() => setCopied(false), 2500);
+                setTimeout(() => setCopyFlash(false), 600);
             } else {
                 toast.error("Failed to copy — try long-pressing to select.");
             }
@@ -198,7 +204,8 @@ export function PromptDetailClient({ prompt }: PromptDetailClientProps) {
                                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-300 ${copied
                                         ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
                                         : "bg-zinc-800 text-zinc-300 border border-zinc-700 hover:bg-zinc-700 hover:text-white"
-                                        }`}
+                                        } ${copyFlash ? "scale-110 shadow-[0_0_12px_rgba(16,185,129,0.4)]" : ""}`}
+                                    style={{ transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)' }}
                                 >
                                     {copied ? (
                                         <>

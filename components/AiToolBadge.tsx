@@ -112,14 +112,15 @@ export const toolIcons = new Proxy({} as Record<string, React.ElementType>, {
 interface AiToolBadgeProps {
     tool: string;
     monochrome?: boolean;
+    className?: string;
 }
 
-export function AiToolBadge({ tool, monochrome }: AiToolBadgeProps) {
+export function AiToolBadge({ tool, monochrome, className }: AiToolBadgeProps) {
     const color = monochrome ? "bg-zinc-50 text-zinc-500 border-zinc-100" : getToolColor(tool);
     const Icon = getToolIcon(tool);
 
     return (
-        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-medium border ${color}`}>
+        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-medium border ${color} ${className || ""}`}>
             <Icon className="w-3 h-3" strokeWidth={1.8} />
             {tool}
         </span>
