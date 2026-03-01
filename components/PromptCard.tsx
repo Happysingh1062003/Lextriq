@@ -5,6 +5,7 @@ import { ArrowUpRight, Copy, Eye, MessageCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn, formatCount } from "@/lib/utils";
 import { UpvoteButton } from "@/components/UpvoteButton";
+import { toast } from "sonner";
 import type { PromptWithRelations } from "@/types";
 
 interface PromptCardProps {
@@ -61,9 +62,14 @@ export const PromptCard = memo(function PromptCard({
         setOptimisticCopies(prev => prev + 1);
 
         navigator.clipboard.writeText(prompt.content);
+        toast.success("Prompt copied to clipboard!");
 
         // Fire copy API in background
-        fetch(`/api/prompts/${prompt.id}/copy`, { method: "POST" }).catch(console.error);
+        fetch(`/api/prompts/${prompt.id}/copy`, { method: "POST" }).catch((error) => {
+            console.error(error);
+            setOptimisticCopies(prev => prev - 1);
+            toast.error("Failed to track copy request.");
+        });
     };
 
     const promptText = prompt.content?.length > 140

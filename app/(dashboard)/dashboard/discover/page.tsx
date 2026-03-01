@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+    title: "Discover Prompts",
+    description: "Search and discover the best AI prompts across all categories.",
+};
 import { getPrompts, getUserInteractionState } from "@/lib/queries";
 import { auth } from "@/lib/auth";
 import DiscoverContent from "./DiscoverContent";

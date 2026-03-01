@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { auth } from "@/lib/auth";
+
+export const metadata: Metadata = {
+    title: "My Prompts",
+    description: "Manage your created AI prompts and track your total views and copies.",
+};
 import Link from "next/link";
 import {
     Eye,

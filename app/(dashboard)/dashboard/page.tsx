@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+    title: "Dashboard",
+    description: "Manage your saved and see the latest AI prompts.",
+};
 import { auth } from "@/lib/auth";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
