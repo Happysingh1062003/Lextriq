@@ -25,14 +25,14 @@ export async function POST(
                 where: { id: existing.id },
             });
             const count = await prisma.upvote.count({ where: { promptId } });
-            revalidateTag("prompts");
+            revalidateTag("prompts", {});
             return NextResponse.json({ upvoted: false, count }, { status: 200 });
         } else {
             await prisma.upvote.create({
                 data: { userId, promptId },
             });
             const count = await prisma.upvote.count({ where: { promptId } });
-            revalidateTag("prompts");
+            revalidateTag("prompts", {});
             return NextResponse.json({ upvoted: true, count }, { status: 200 });
         }
     } catch (error) {

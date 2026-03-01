@@ -14,7 +14,7 @@ export async function POST(
             data: { copyCount: { increment: 1 } },
         });
 
-        revalidateTag("prompts");
+        revalidateTag("prompts", {});
 
         return NextResponse.json({ success: true }, { status: 200 });
     } catch (error) {

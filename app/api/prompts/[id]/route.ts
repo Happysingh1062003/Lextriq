@@ -29,7 +29,7 @@ export async function GET(
             },
         });
 
-        revalidateTag("prompts");
+        revalidateTag("prompts", {});
 
         return NextResponse.json(prompt, { status: 200 });
     } catch (error: any) {
