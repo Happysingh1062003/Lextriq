@@ -47,6 +47,8 @@ model Prompt {
 
   @@index([published, createdAt])
   @@index([published, category])
+  @@index([published, views])
+  @@index([published, copyCount])
   @@index([authorId, createdAt])
 }
 
@@ -57,6 +59,8 @@ model Result {
   content  String?
   prompt   Prompt  @relation(fields: [promptId], references: [id], onDelete: Cascade)
   promptId String
+
+  @@index([promptId])
 }
 
 model Upvote {
@@ -90,6 +94,8 @@ model Comment {
   prompt    Prompt   @relation(fields: [promptId], references: [id], onDelete: Cascade)
   promptId  String
   createdAt DateTime @default(now())
+
+  @@index([promptId])
 }
 
 model Account {

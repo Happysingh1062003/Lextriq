@@ -108,7 +108,7 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
     return (
         <div className="space-y-3" ref={dropdownRef}>
             {/* Filter Bar Container */}
-            <div className="py-2">
+            <div className="py-2 relative">
                 <div className="flex flex-wrap items-center gap-1.5">
                     {/* Search */}
                     <div className="relative flex-1 min-w-[180px] max-w-sm">
@@ -145,7 +145,7 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
                     <div className="w-px h-6 bg-zinc-100 mx-0.5 hidden sm:block" />
 
                     {/* Category Filter */}
-                    <div className="relative flex-shrink-0">
+                    <div className="max-sm:static sm:relative flex-shrink-0">
                         <button
                             onClick={() => setOpenDropdown(openDropdown === "category" ? null : "category")}
                             className={cn(
@@ -165,7 +165,7 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
                             <ChevronDown className={cn("w-3 h-3 transition-transform duration-200", openDropdown === "category" && "rotate-180")} />
                         </button>
                         {openDropdown === "category" && (
-                            <div className="absolute top-full mt-2 left-0 bg-white border border-zinc-100 rounded-2xl p-1.5 z-[60] w-52 max-h-64 overflow-y-auto shadow-[0_12px_40px_-12px_rgba(0,0,0,0.15)] animate-fade-in">
+                            <div className="absolute top-full mt-2 max-sm:left-0 max-sm:right-0 sm:left-0 max-sm:w-auto max-sm:mx-1 sm:w-52 max-h-64 overflow-y-auto bg-white border border-zinc-100 rounded-2xl p-1.5 z-[60] shadow-[0_12px_40px_-12px_rgba(0,0,0,0.15)] animate-fade-in">
                                 <p className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider px-3 py-1.5">Categories</p>
                                 {CATEGORIES.map((cat) => (
                                     <button
@@ -189,7 +189,7 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
                     </div>
 
                     {/* AI Tool Filter */}
-                    <div className="relative flex-shrink-0">
+                    <div className="max-sm:static sm:relative flex-shrink-0">
                         <button
                             onClick={() => setOpenDropdown(openDropdown === "tool" ? null : "tool")}
                             className={cn(
@@ -208,7 +208,7 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
                             <ChevronDown className={cn("w-3 h-3 transition-transform duration-200", openDropdown === "tool" && "rotate-180")} />
                         </button>
                         {openDropdown === "tool" && (
-                            <div className="absolute top-full mt-2 left-0 bg-white border border-zinc-100 rounded-2xl p-1.5 z-[60] w-56 max-h-72 overflow-y-auto shadow-[0_12px_40px_-12px_rgba(0,0,0,0.15)] animate-fade-in">
+                            <div className="absolute top-full mt-2 max-sm:left-0 max-sm:right-0 sm:left-0 max-sm:w-auto max-sm:mx-1 sm:w-56 max-h-72 overflow-y-auto bg-white border border-zinc-100 rounded-2xl p-1.5 z-[60] shadow-[0_12px_40px_-12px_rgba(0,0,0,0.15)] animate-fade-in">
                                 <p className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider px-3 py-1.5">AI Tools</p>
                                 {AI_TOOLS.map((tool) => (
                                     <button
@@ -235,7 +235,7 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
                     <div className="w-px h-5 bg-zinc-100 mx-0.5 flex-shrink-0" />
 
                     {/* Sort */}
-                    <div className="relative flex-shrink-0">
+                    <div className="max-sm:static sm:relative flex-shrink-0">
                         <button
                             onClick={() => setOpenDropdown(openDropdown === "sort" ? null : "sort")}
                             className={cn(
@@ -250,7 +250,7 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
                             <ChevronDown className={cn("w-3 h-3 transition-transform duration-200", openDropdown === "sort" && "rotate-180")} />
                         </button>
                         {openDropdown === "sort" && (
-                            <div className="absolute top-full mt-2 right-0 bg-white border border-zinc-100 rounded-2xl p-1.5 z-[60] w-44 shadow-[0_12px_40px_-12px_rgba(0,0,0,0.15)] animate-fade-in">
+                            <div className="absolute top-full mt-2 max-sm:left-0 max-sm:right-0 sm:right-0 max-sm:w-auto max-sm:mx-1 sm:w-44 bg-white border border-zinc-100 rounded-2xl p-1.5 z-[60] shadow-[0_12px_40px_-12px_rgba(0,0,0,0.15)] animate-fade-in">
                                 <p className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider px-3 py-1.5">Sort by</p>
                                 {SORT_OPTIONS.map((opt) => (
                                     <button

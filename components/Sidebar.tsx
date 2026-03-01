@@ -14,7 +14,6 @@ import {
     History,
     Code,
     Palette,
-    Bug,
     Rocket,
     Sparkles,
 } from "lucide-react";
@@ -32,7 +31,7 @@ const categoryItems = [
     { label: "Coding", href: "/dashboard/discover?category=Coding", icon: Code, color: "text-blue-500" },
     { label: "Developing", href: "/dashboard/discover?category=Developing", icon: Rocket, color: "text-emerald-500" },
     { label: "UI/UX", href: "/dashboard/discover?category=UI/UX", icon: Palette, color: "text-purple-500" },
-    { label: "Creatives", href: "/dashboard/discover?category=Creatives", icon: Sparkles, color: "text-rose-500" },
+    { label: "Creative", href: "/dashboard/discover?category=Creative", icon: Sparkles, color: "text-rose-500" },
 ];
 
 export function Sidebar({
@@ -101,8 +100,8 @@ export function Sidebar({
             </div>
 
             {/* Nav */}
-            <nav className="flex-1 px-4 pt-8 overflow-y-auto overflow-x-hidden pb-4 space-y-6">
-                <div className="space-y-1">
+            <nav className="flex-1 px-4 pt-8 overflow-y-auto overflow-x-hidden pb-4 space-y-8">
+                <div className="space-y-2">
                     {navItems.map((item) => {
                         const Icon = item.icon;
                         const isActive =
@@ -113,7 +112,7 @@ export function Sidebar({
                             <Link key={item.href} href={item.href}>
                                 <div
                                     className={cn(
-                                        "relative flex items-center gap-4 px-3 py-2.5 rounded-xl transition-all duration-200 text-[14.5px] group",
+                                        "relative flex items-center gap-4 px-3 py-1.5 rounded-md transition-all duration-200 text-[14.5px] group",
                                         collapsed && "justify-center px-0",
                                         isActive
                                             ? "text-zinc-900 font-semibold"
@@ -124,7 +123,7 @@ export function Sidebar({
                                     {isActive && (
                                         <motion.div
                                             layoutId="sidebar-active"
-                                            className="absolute inset-0 bg-black/5 rounded-xl"
+                                            className="absolute inset-0 bg-black/5 rounded-md"
                                             style={{ zIndex: -1 }}
                                             transition={{ type: "spring", stiffness: 350, damping: 30 }}
                                         />
@@ -150,14 +149,14 @@ export function Sidebar({
                             Categories
                         </div>
                     )}
-                    <div className="space-y-1">
+                    <div className="space-y-4">
                         {categoryItems.map((cat) => {
                             const CatIcon = cat.icon;
                             return (
                                 <Link key={cat.label} href={cat.href}>
                                     <div
                                         className={cn(
-                                            "flex items-center gap-4 px-3 py-1.5 rounded-xl transition-all duration-300 text-[14.5px] group hover:bg-black/5",
+                                            "flex items-center gap-4 px-3 py-1.5 rounded-md transition-all duration-300 text-[14.5px] group hover:bg-black/5",
                                             collapsed && "justify-center px-0"
                                         )}
                                     >

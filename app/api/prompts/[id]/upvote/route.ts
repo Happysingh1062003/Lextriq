@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 
@@ -24,13 +25,15 @@ export async function POST(
                 where: { id: existing.id },
             });
             const count = await prisma.upvote.count({ where: { promptId } });
-            return NextResponse.json({ upvoted: false, count });
+            revalidateTag("prompts");
+            return NextResponse.json({ upvoted: false, count }, { status: 200 });
         } else {
             await prisma.upvote.create({
                 data: { userId, promptId },
             });
             const count = await prisma.upvote.count({ where: { promptId } });
-            return NextResponse.json({ upvoted: true, count });
+            revalidateTag("prompts");
+            return NextResponse.json({ upvoted: true, count }, { status: 200 });
         }
     } catch (error) {
         return NextResponse.json(

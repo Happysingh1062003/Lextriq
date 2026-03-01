@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useMemo } from "react";
+import { memo, useMemo, useState } from "react";
 import { ArrowUpRight, Copy, Eye, MessageCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn, formatCount } from "@/lib/utils";
@@ -35,6 +35,10 @@ export const PromptCard = memo(function PromptCard({
     isUpvoted = false,
     isBookmarked = false,
 }: PromptCardProps) {
+    const [optimisticCopies, setOptimisticCopies] = useState(prompt.copyCount || 0);
+    const [optimisticViews, setOptimisticViews] = useState(prompt.views || 0);
+    const [optimisticUpvoteCount, setOptimisticUpvoteCount] = useState(prompt._count?.upvotes || 0);
+
     const style = categoryStyles[prompt.category] || categoryStyles.Other;
 
     // Staggered entrance
@@ -46,7 +50,20 @@ export const PromptCard = memo(function PromptCard({
     const router = useRouter();
 
     const handleCardClick = () => {
+        setOptimisticViews(prev => prev + 1); // Optimistic view count
         router.push(`/dashboard/prompt/${prompt.id}`);
+    };
+
+    const handleCopyClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+
+        // Optimistic update
+        setOptimisticCopies(prev => prev + 1);
+
+        navigator.clipboard.writeText(prompt.content);
+
+        // Fire copy API in background
+        fetch(`/api/prompts/${prompt.id}/copy`, { method: "POST" }).catch(console.error);
     };
 
     const promptText = prompt.content?.length > 140
@@ -75,6 +92,7 @@ export const PromptCard = memo(function PromptCard({
                         promptId={prompt.id}
                         initialCount={prompt._count?.upvotes || 0}
                         initialUpvoted={isUpvoted}
+                        onToggle={(upvoted, count) => setOptimisticUpvoteCount(count)}
                     />
                 </div>
             </div>
@@ -97,12 +115,16 @@ export const PromptCard = memo(function PromptCard({
                 <div className="flex items-center gap-2.5 text-black/40">
                     <div className="flex items-center gap-1" title="Views">
                         <Eye className="w-3.5 h-3.5" strokeWidth={1.5} />
-                        <span className="text-[11px] font-medium">{formatCount(prompt.views || 0)}</span>
+                        <span className="text-[11px] font-medium">{formatCount(optimisticViews)}</span>
                     </div>
-                    {(prompt.copyCount || 0) > 0 && (
-                        <div className="flex items-center gap-1" title="Copies">
+                    {optimisticCopies > 0 && (
+                        <div
+                            className="flex items-center gap-1 cursor-pointer hover:text-black/70 transition-colors"
+                            title="Copy"
+                            onClick={handleCopyClick}
+                        >
                             <Copy className="w-3.5 h-3.5" strokeWidth={1.5} />
-                            <span className="text-[11px] font-medium">{formatCount(prompt.copyCount || 0)}</span>
+                            <span className="text-[11px] font-medium">{formatCount(optimisticCopies)}</span>
                         </div>
                     )}
                     {(prompt._count?.comments || 0) > 0 && (

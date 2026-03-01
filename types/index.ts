@@ -88,19 +88,24 @@ export const CATEGORIES = [
 
 export const AI_TOOLS = [
     // OpenAI
+    "GPT-5",
+    "GPT-4.5",
     "GPT-4o",
     "GPT-4o Mini",
     "GPT-4 Turbo",
+    "o3",
+    "o3 Mini",
     "o1",
     "o1 Mini",
-    "o3 Mini",
     "ChatGPT",
     "DALL-E 3",
     "Sora",
     // Anthropic
+    "Claude Opus 4.6",
     "Claude Sonnet 4.6",
     "Claude Sonnet 4.5",
     "Claude Haiku 4.5",
+    "Claude 4 Opus",
     "Claude 3.5 Sonnet",
     "Claude 3.5 Haiku",
     "Claude 3 Opus",
@@ -108,6 +113,7 @@ export const AI_TOOLS = [
     // Google
     "Gemini 2.5 Pro",
     "Gemini 2.5 Flash",
+    "Gemini 2.0 Pro",
     "Gemini 2.0 Flash",
     "Gemini 1.5 Pro",
     "Gemini 1.5 Flash",
@@ -116,15 +122,20 @@ export const AI_TOOLS = [
     "Grok 3",
     "Grok 2",
     // Meta
+    "Llama 4",
     "Llama 3.1",
     "Llama 3",
-    // DeepSeek
+    // DeepSeek & Chinese Models
     "DeepSeek R1",
     "DeepSeek V3",
     "DeepSeek Coder",
+    "Qwen 3",
+    "Qwen 2.5 Max",
+    "Qwen 2.5",
     // Mistral
     "Mistral Large",
     "Mistral Medium",
+    "Pixtral",
     "Mistral",
     // Coding Tools
     "GitHub Copilot",
@@ -133,6 +144,7 @@ export const AI_TOOLS = [
     "Windsurf",
     "Tabnine",
     // Image Generation
+    "Midjourney v7",
     "Midjourney v6",
     "Midjourney",
     "Stable Diffusion 3",
@@ -143,10 +155,17 @@ export const AI_TOOLS = [
     "Adobe Firefly",
     // Video Generation
     "Runway Gen-3",
-    "Pika",
+    "Luma Dream Machine",
     "Kling",
+    "Hailuo",
+    "Pika",
     "Veo 2",
+    // Audio Generation
+    "ElevenLabs",
+    "Suno",
+    "Udio",
     // Search & Research
+    "SearchGPT",
     "Perplexity",
     "Cohere",
     // Other

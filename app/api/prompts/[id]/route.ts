@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 
@@ -28,7 +29,9 @@ export async function GET(
             },
         });
 
-        return NextResponse.json(prompt);
+        revalidateTag("prompts");
+
+        return NextResponse.json(prompt, { status: 200 });
     } catch (error: any) {
         // Prisma throws when record not found on update
         if (error?.code === "P2025") {

@@ -8,7 +8,7 @@ const categories = [
   { label: "Coding", bg: "bg-[#EFC6F6]" },
   { label: "Developing", bg: "bg-[#ABCCF2]" },
   { label: "UI/UX", bg: "bg-[#F2AF70]" },
-  { label: "Creatives", bg: "bg-[#FFF2CD]" },
+  { label: "Creative", bg: "bg-[#FFF2CD]" },
   { label: "Writing", bg: "bg-[#CDEDF6]" },
   { label: "More", bg: "bg-[#EAEFF0]" },
 ];
