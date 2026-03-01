@@ -216,8 +216,7 @@ export default function LandingPage() {
           </div>
 
           <div className="flex items-center gap-8 text-[13px] font-medium text-zinc-400">
-            <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-600 transition-colors">Twitter</a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-600 transition-colors">GitHub</a>
+            <a href="https://github.com/Happysingh1062003/Lextriq" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-600 transition-colors">GitHub</a>
             <span className="text-zinc-300 px-2">•</span>
             <span>© 2026</span>
           </div>
