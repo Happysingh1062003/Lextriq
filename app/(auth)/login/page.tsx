@@ -77,7 +77,7 @@ export default function LoginPage() {
                     {/* OAuth */}
                     <div className="space-y-2.5 mb-6">
                         <button
-                            onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+                            onClick={() => signIn("google", { redirectTo: "/dashboard" })}
                             className="w-full flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-lg border border-zinc-200 text-sm font-medium text-zinc-700 hover:bg-zinc-50 transition-colors cursor-pointer"
                         >
                             <svg className="w-4 h-4" viewBox="0 0 24 24">
@@ -89,7 +89,7 @@ export default function LoginPage() {
                             Continue with Google
                         </button>
                         <button
-                            onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
+                            onClick={() => signIn("github", { redirectTo: "/dashboard" })}
                             className="w-full flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-lg border border-zinc-200 text-sm font-medium text-zinc-700 hover:bg-zinc-50 transition-colors cursor-pointer"
                         >
                             <Github className="w-4 h-4" />
