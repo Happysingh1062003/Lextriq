@@ -88,13 +88,7 @@ export default function LoginPage() {
                             </svg>
                             Continue with Google
                         </button>
-                        <button
-                            onClick={() => signIn("github", { redirectTo: "/dashboard" })}
-                            className="w-full flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-lg border border-zinc-200 text-sm font-medium text-zinc-700 hover:bg-zinc-50 transition-colors cursor-pointer"
-                        >
-                            <Github className="w-4 h-4" />
-                            Continue with GitHub
-                        </button>
+
                     </div>
 
                     {/* Divider */}
