@@ -55,19 +55,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
 }
 
-// Pre-render the most popular combinations
-export async function generateStaticParams() {
-    const topTools = ["chatgpt", "claude", "gemini", "midjourney", "gpt-4o"];
-    const topCategories = ["coding", "marketing", "writing", "creative", "designing"];
 
-    const params: { tool: string; category: string }[] = [];
-    for (const tool of topTools) {
-        for (const category of topCategories) {
-            params.push({ tool, category });
-        }
-    }
-    return params;
-}
 
 export default async function PromptSEOPage({ params }: PageProps) {
     const { tool, category } = await params;
